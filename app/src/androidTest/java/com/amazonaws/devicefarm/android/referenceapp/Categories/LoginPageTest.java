@@ -65,6 +65,7 @@ public class LoginPageTest extends BaseADFTest {
     private void loginIn(String user, String pass, int message){
         writeTextIntoTextBox(R.id.username_text_input, user);
         writeTextIntoTextBox(R.id.password_text_input, pass);
+        takeScreenShot();
         clickId(R.id.login_button);
         checkLoginMessage(message);
         clickId(R.id.alt_button);
