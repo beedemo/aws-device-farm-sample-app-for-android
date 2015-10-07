@@ -143,9 +143,6 @@ node('linux'){
     )
     
     stage 'Schedule Test Run'
-    //the Top Devices AWS Device Farm Device Pool is available globally
-    echo "uploadAppArn: ${uploadAppArn}"
-    echo "uploadTestArn: ${uploadTestArn}"
     wrap(
       [$class: 'AmazonAwsCliBuildWrapper', 
       credentialsId: 'AWS-DEVICE-FARM-CREDS', 
@@ -166,8 +163,8 @@ node('linux'){
     jsonSlurper = null
     runArn = scheduleRunObj.run.arn
     scheduleRunObj = null
-    //instrumentation jobs take several minutes, so sleep job before polling for run results
-    sleep time: 9, unit: 'MINUTES'
+    //instrumentation jobs take a while, so sleep job before polling for run results
+    sleep time: 14, unit: 'MINUTES'
     def getRunOutput
     def runResult
     waitUntil {
