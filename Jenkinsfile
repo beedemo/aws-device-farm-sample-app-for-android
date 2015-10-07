@@ -26,7 +26,7 @@ checkpoint 'successfully built app and test package'
 //just need a generic linux node for aws steps
 node('linux'){
     stage 'Set Up Device Farm Project'
-    curl -o get-pip.py https://bootstrap.pypa.io/get-pip.py
+    sh 'curl -o get-pip.py https://bootstrap.pypa.io/get-pip.py'
     //create a new Device Farm project if projectArn paramter is not specified
     if(!projectArn) {
       writeFile file: 'create-project.json', text: '{"name": "Jenkins Workflow AWS CLI Device Farm Demo"}' 
