@@ -7,6 +7,7 @@ stage 'Acquire Build Node'
 node('docker') {
     //build Android app in Docker container
     stage 'Build App'
+    sh 'keytool -genkey -v -keystore app/debug.keystore -storepass android -alias androiddebugkey -keypass android -dname "CN=Android Debug,O=Android,C=US"'
     //checkout AWS Device Farm Sample Android App from GitHub
     git 'https://github.com/kmadel/aws-device-farm-sample-app-for-android.git'
     //tell docker to pull the android skd image, 
