@@ -25,7 +25,6 @@ checkpoint 'successfully built app and test package'
 //just need a generic linux node for aws steps
 node('linux'){
     stage 'Set Up Device Farm Project'
-    sh 'curl -o get-pip.py https://bootstrap.pypa.io/get-pip.py'
     //create a new Device Farm project if projectArn paramter is not specified
     if(!projectArn) {
       writeFile file: 'create-project.json', text: '{"name": "Jenkins Workflow AWS CLI Device Farm Demo"}' 
@@ -35,7 +34,7 @@ node('linux'){
         defaultRegion: 'us-west-2']) {
             sh 'aws devicefarm create-project --cli-input-json file://create-project.json > createProjectOutput'
         }
-        //get project arn from output to list device pools
+        //get project arn from output
         def createProjectOutput = readFile('createProjectOutput')
         def jsonSlurper = new JsonSlurper()
         def projectObj = jsonSlurper.parseText(createProjectOutput)
