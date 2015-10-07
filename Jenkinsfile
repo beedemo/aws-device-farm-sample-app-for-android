@@ -150,10 +150,15 @@ node('linux'){
           sh "aws devicefarm schedule-run --project-arn ${projectArn} --app-arn ${uploadAppArn} --device-pool-arn ${devicePoolArn} --test type=INSTRUMENTATION,testPackageArn=${uploadTestArn} > scheduleRunOutput"
     }
     stash includes: 'scheduleRunOutput', name: 'scheduleRunOutput'
+}
 
-    checkpoint 'successfully uploaded app and test pkg'
-    
-    stage 'Get Test Results'
+checkpoint 'successfully uploaded app and test pkg'
+
+stage 'Get Test Results'
+//instrumentation jobs take a while, so sleep job before polling for run results
+sleep time: 14, unit: 'MINUTES'
+//just need a generic linux node for aws steps
+node('linux'){    
     unstash 'scheduleRunOutput'
     def scheduleRunOutput = readFile('scheduleRunOutput')
     echo scheduleRunOutput
@@ -163,8 +168,7 @@ node('linux'){
     jsonSlurper = null
     runArn = scheduleRunObj.run.arn
     scheduleRunObj = null
-    //instrumentation jobs take a while, so sleep job before polling for run results
-    sleep time: 14, unit: 'MINUTES'
+    
     def getRunOutput
     def runResult
     waitUntil {
