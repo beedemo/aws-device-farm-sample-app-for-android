@@ -5,6 +5,7 @@ def devicePoolArn
 
 stage 'Acquire Build Node'
 node('docker') {
+    sh 'echo feature branch'
     //build Android app in Docker container
     stage 'Build App'
     //checkout AWS Device Farm Sample Android App from GitHub
