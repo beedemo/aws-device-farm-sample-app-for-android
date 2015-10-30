@@ -7,7 +7,8 @@ stage 'Acquire Build Node'
 node('docker') {
     sh 'echo feature branch'
     //check for debug.keystore and create if doesn't exist
-    if(!fileExists 'app/debug.keystore') {
+    def keystoreExists = fileExists 'app/debug.keystore'
+    if(!keystoreExists) {
       sh 'keytool -genkey -v -keystore app/debug.keystore -storepass android -alias androiddebugkey -keypass android -dname "CN=Android Debug,O=Android,C=US"'
     }
     //build Android app in Docker container
