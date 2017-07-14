@@ -19,7 +19,7 @@ node('docker') {
     //start that as a container, 
     //and then run the proceeding block of workflow steps
     docker.image('kmadel/android-sdk:24.3.3').inside {
-        sh 'ls'
+        sh 'ls -lR'
         sh './gradlew assembleDebug assembleDebugAndroidTest'
     }
     //stash successful build
