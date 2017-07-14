@@ -30,7 +30,7 @@ node('docker') {
 //add checkpoint so if upload fails, don't need to rebuild
 checkpoint 'successfully built app and test package'
 //just need a generic linux node for aws steps
-node('linux'){
+node('docker'){
     stage 'Set Up Device Farm Project'
     //create a new Device Farm project if projectArn paramter is not specified
     if(!projectArn) {
@@ -165,7 +165,7 @@ stage 'Get Test Results'
 //instrumentation jobs take a while, so sleep job before polling for run results
 sleep time: 14, unit: 'MINUTES'
 //just need a generic linux node for aws steps
-node('linux'){    
+node('docker'){    
     unstash 'scheduleRunOutput'
     def scheduleRunOutput = readFile('scheduleRunOutput')
     echo scheduleRunOutput
