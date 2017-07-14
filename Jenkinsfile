@@ -10,6 +10,7 @@ node('docker') {
     //check for debug.keystore and create if doesn't exist
     def keystoreExists = fileExists 'app/debug.keystore'
     if(!keystoreExists) {
+      sh 'mkdir app'
       sh 'keytool -genkey -v -keystore app/debug.keystore -storepass android -alias androiddebugkey -keypass android -dname "CN=Android Debug,O=Android,C=US"'
     }
     //checkout AWS Device Farm Sample Android App from GitHub
