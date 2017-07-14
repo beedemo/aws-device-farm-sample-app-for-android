@@ -7,19 +7,19 @@ stage 'Acquire Build Node'
 node('docker') {
     //build Android app in Docker container
     stage 'Build App'
+    //checkout AWS Device Farm Sample Android App from GitHub
+    git 'https://github.com/kmadel/aws-device-farm-sample-app-for-android.git'
+    
     //check for debug.keystore and create if doesn't exist
     def keystoreExists = fileExists 'app/debug.keystore'
     if(!keystoreExists) {
-      sh 'mkdir app'
       sh 'keytool -genkey -v -keystore app/debug.keystore -storepass android -alias androiddebugkey -keypass android -dname "CN=Android Debug,O=Android,C=US"'
     }
-    //checkout AWS Device Farm Sample Android App from GitHub
-    git 'https://github.com/kmadel/aws-device-farm-sample-app-for-android.git'
+    
     //tell docker to pull the android skd image, 
     //start that as a container, 
     //and then run the proceeding block of workflow steps
     docker.image('kmadel/android-sdk:24.3.3').inside {
-        sh 'ls -lR'
         sh './gradlew assembleDebug assembleDebugAndroidTest'
     }
     //stash successful build
