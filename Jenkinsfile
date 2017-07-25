@@ -32,6 +32,7 @@ checkpoint 'successfully built app and test package'
 //just need a generic linux node for aws steps
 node('python-pip'){
     stage 'Set Up Device Farm Project'
+    sh 'pwd'
     //create a new Device Farm project if projectArn paramter is not specified
     if(!projectArn) {
       writeFile file: 'create-project.json', text: '{"name": "Jenkins Workflow AWS CLI Device Farm Demo"}' 
